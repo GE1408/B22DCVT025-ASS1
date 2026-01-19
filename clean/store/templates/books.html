@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Catalog - Antigravity Store{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin: 3rem 0;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem;">Curated Collection
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.125rem;">Handpicked technical books for the modern engineer.</p>
+</div>
+
+<div class="grid">
+    {% for book in books %}
+    <div class="book-card">
+        <div class="book-cover">
+            📚
+        </div>
+        <div class="book-content">
+            <h2 class="book-title">{{ book.title }}</h2>
+            <p class="book-author">by {{ book.author }}</p>
+            <div class="book-footer">
+                <span class="book-price">${{ book.price }}</span>
+                {% if book.stock > 0 %}
+                <form action="{% url 'add_to_cart' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+                </form>
+                {% else %}
+                <span class="text-sm" style="color: var(--error); font-weight: 600;">Out of Stock</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

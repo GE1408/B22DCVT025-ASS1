@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}My Cart - Antigravity Store{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 3rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 700;">Shopping Cart</h1>
+        <a href="{% url 'books' %}" class="btn btn-primary btn-sm"
+            style="background-color: var(--surface); color: var(--primary-color); border: 1px solid var(--border);">Continue
+            Shopping</a>
+    </div>
+
+    {% if cart and cart.items %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.items %}
+            <tr>
+                <td>
+                    <div style="font-weight: 600;">{{ item.book.title }}</div>
+                    <div class="text-sm" style="color: var(--text-muted);">{{ item.book.author }}</div>
+                </td>
+                <td>${{ item.book.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <!-- Basic JS logic or Backend logic needed for row total, simpler to just list props for now -->
+                <!-- We don't have row total in entity, let's just show basic info -->
+                <td>-</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Placeholder for total, would need entity calculation -->
+    <div class="cart-total">
+        Total: <span style="color: var(--primary-color);">Calculated at Checkout</span>
+    </div>
+
+    <div style="margin-top: 2rem; text-align: right;">
+        <button class="btn btn-primary">Proceed to Checkout</button>
+    </div>
+    {% else %}
+    <div class="card text-center" style="padding: 4rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+        <h2 style="margin-bottom: 1rem;">Your cart is empty</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Looks like you haven't added any books yet.</p>
+        <a href="{% url 'books' %}" class="btn btn-primary">Browse Catalog</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
